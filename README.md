@@ -1,5 +1,7 @@
 # image_filtering
 
+This script is used to browse images and copy selected images from `source_img_dir` to `selected_img_dir`.
+
 # Setup
 
 Clone this repo
