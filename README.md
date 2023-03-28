@@ -2,6 +2,14 @@
 
 # Setup
 
+Clone this repo
+
+```
+git clone https://github.com/vovaxnz/image_filtering.git
+```
+
+Install dependencies
+
 ```
 pip install opencv-contrib-python numpy
 ```
