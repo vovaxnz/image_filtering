@@ -39,3 +39,14 @@ Save file and run script with command
 python image_filtering.py
 ```
 
+Controls:
+
+```
+w - forward with short delay
+s - forward with normal delay
+x - forward with long delay
+a - backward short delay
+c - select image
+p - close window
+```
+
