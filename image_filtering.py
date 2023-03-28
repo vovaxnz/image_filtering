@@ -1,16 +1,3 @@
-"""
-w - forward with short delay
-s - forward with normal delay
-x - forward with long delay
-
-a - backward short delay
-
-c - select image
-
-p - close window
-"""
-
-
 import os
 from typing import Dict
 import cv2
@@ -48,8 +35,12 @@ def main(
 
     dir_create_time = os.stat(source_img_dir).st_mtime
     dir_creation_datetime_str = datetime.fromtimestamp(int(dir_create_time)).strftime("%Y-%m-%d_%H-%M-%S")
+    
+    json_info_name = source_img_dir.replace(os.sep, "-")[1:] + "_" + dir_creation_datetime_str + ".json"
+    json_info_name = json_info_name[-100:]    
 
-    info_json_path = os.path.join(os.path.dirname(__file__), source_img_dir.replace(os.sep, "-")[1:] + "_" + dir_creation_datetime_str + ".json")
+
+    info_json_path = os.path.join(os.path.dirname(__file__), json_info_name)
     if os.path.isfile(info_json_path):
         img_id = open_json(info_json_path)["img_id"]
         duration = open_json(info_json_path)["duration"]
