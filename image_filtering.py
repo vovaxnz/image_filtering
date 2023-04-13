@@ -77,7 +77,7 @@ def main(
             start_time = curr_time
             duration += step_duration
             save_json({"img_id": img_id, "duration": duration}, info_json_path)
-            print(f'Image ID: {img_id}, Processed {round(img_id / total_number_of_images * 100, 2)}% of images, Your speed: {int(img_counter / duration * 3600)} images/hour, filtering_duration: {int(duration)} sec')
+            print(f'Image ID: {img_id}, Processed {round(img_id / total_number_of_images * 100, 2)}% of images, Your speed: {int(img_counter / duration * 3600)} images/hour, filtering_duration: {round(duration / 3600, 3)} hours')
 
         k = cv2.waitKey(0)
         time.sleep(delay / 1000)
