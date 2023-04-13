@@ -6,6 +6,7 @@ import time
 import json
 import numpy as np
 from datetime import datetime
+import argparse
 
 
 def save_json(
@@ -130,15 +131,25 @@ def main(
             break
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", type=str)
+    parser.add_argument("--selected", type=str)
+    parser.add_argument("--window_height", type=int, default=1280)
+    parser.add_argument("--window_width", type=int, default=720)
+    parser.add_argument("--short_delay_ms", type=int, default=5)
+    parser.add_argument("--normal_delay_ms", type=int, default=40)
+    parser.add_argument("--long_delay_ms", type=int, default=100)
+    args = parser.parse_args()
+    
     main(
-        source_img_dir = '/media/vova/data/viz/preprocessed',
-        selected_img_dir = '/media/vova/data/viz/preprocessed_selected',
+        source_img_dir=args.source,
+        selected_img_dir=args.selected,
 
-        window_height = 1280,
-        window_width = 720,
+        window_height=args.window_height,
+        window_width=args.window_width,
         
-        short_delay_ms = 5,
-        normal_delay_ms = 40,
-        long_delay_ms = 100,
+        short_delay_ms=args.short_delay_ms,
+        normal_delay_ms=args.normal_delay_ms,
+        long_delay_ms=args.long_delay_ms,
     )
             

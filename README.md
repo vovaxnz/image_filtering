@@ -18,30 +18,20 @@ pip install opencv-contrib-python numpy
 
 # Usage
 
-Specify paths to your directories and other parameters at the bottom of the `image_filtering.py` file
+## 1. Specify paths to your directories in the `filter.sh` file
 
 ```
-if __name__ == "__main__":
-    main(
-        source_img_dir = '/media/vova/data/viz/preprocessed',
-        selected_img_dir = '/media/vova/data/viz/preprocessed_selected',
-
-        window_height = 1280,
-        window_width = 720,
-        
-        short_delay_ms = 5,
-        normal_delay_ms = 40,
-        long_delay_ms = 100,
-    )
+SOURCE_IMG_DIR=
+SELECTED_IMG_DIR=
 ```
 
-Save file and run script with command
+## 2. Save `filter.sh` and run script with command
 
 ```
-python image_filtering.py
+sh filter.sh
 ```
 
-Controls:
+# Controls:
 
 ```
 w - forward with short delay
@@ -52,3 +42,23 @@ c - select image
 p - close window
 ```
 
+# Download/Upload data
+
+For downloading and uploading data use `download.sh` and `upload.sh` scripts.
+
+Set your values to this variables in `download.sh` and `upload.sh` files. For example:
+```
+ADDRES=username@123.23.23.23
+REMOTE_DIR=/path/to/dir/on/server
+LOCAL_DIR=/path/to/your/dir
+```
+
+And run script with command:
+```
+sh download.sh
+```
+
+or 
+```
+sh upload.sh
+```
