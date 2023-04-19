@@ -3,28 +3,19 @@ from typing import Dict
 import cv2
 import shutil
 import time
-import json
 import numpy as np
-from datetime import datetime
 import argparse
+from path_manager import PathManager
+
+from utils import open_json, save_json
+
+import config
 
 
-def save_json(
-    value,
-    file_path,
-):
-    with open(file_path, "w") as filename:
-        json.dump(value, filename)
-
-
-def open_json(detections_file) -> Dict:
-    with open(detections_file) as file:
-        value = json.load(file)
-    return value
-
-def main(
+def filtering(
     source_img_dir: str,
     selected_img_dir: str,
+    info_json_path: str,
     window_height: int,
     window_width: int,
     short_delay_ms: int,
@@ -34,14 +25,6 @@ def main(
 ):
     os.makedirs(selected_img_dir, exist_ok=True)
 
-    dir_create_time = os.stat(source_img_dir).st_mtime
-    dir_creation_datetime_str = datetime.fromtimestamp(int(dir_create_time)).strftime("%Y-%m-%d_%H-%M-%S")
-    
-    json_info_name = source_img_dir.replace(os.sep, "-")[1:] + "_" + dir_creation_datetime_str + ".json"
-    json_info_name = json_info_name[-100:]    
-
-
-    info_json_path = os.path.join(os.path.dirname(__file__), json_info_name)
     if os.path.isfile(info_json_path):
         img_id = open_json(info_json_path)["img_id"]
         duration = open_json(info_json_path)["duration"]
@@ -130,26 +113,32 @@ def main(
         if k == ord('p'):
             break
 
+
+def start_filtering(project_id: int):
+
+    pm = PathManager(project_id)
+
+    assert len(pm.source_images_dir) > 0, f"No images found. Download filtering project first via command: python3 download.py -n {project_id}"
+
+    filtering(
+        source_img_dir=pm.source_images_dir,
+        selected_img_dir=pm.selected_images_dir,
+
+        info_json_path=pm.project_json_path,
+
+        window_height=config.window_height,
+        window_width=config.window_width, 
+        
+        short_delay_ms=config.short_delay_ms,
+        normal_delay_ms=config.normal_delay_ms,
+        long_delay_ms=config.long_delay_ms,
+    )
+       
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=str)
-    parser.add_argument("--selected", type=str)
-    parser.add_argument("--window_height", type=int, default=1280)
-    parser.add_argument("--window_width", type=int, default=720)
-    parser.add_argument("--short_delay_ms", type=int, default=5)
-    parser.add_argument("--normal_delay_ms", type=int, default=40)
-    parser.add_argument("--long_delay_ms", type=int, default=100)
+    parser.add_argument("-n", type=int)
     args = parser.parse_args()
-    
-    main(
-        source_img_dir=args.source,
-        selected_img_dir=args.selected,
 
-        window_height=args.window_height,
-        window_width=args.window_width,
-        
-        short_delay_ms=args.short_delay_ms,
-        normal_delay_ms=args.normal_delay_ms,
-        long_delay_ms=args.long_delay_ms,
-    )
-            
+    start_filtering(project_id=args.n)

@@ -1,35 +1,60 @@
 # image_filtering
 
-This script is used to browse images and copy selected images from `source_img_dir` to `selected_img_dir`.
+Utility for image filtering
 
 # Setup
 
-Clone this repo
+## 1. Clone this repo
 
 ```
 git clone https://github.com/vovaxnz/image_filtering.git
 ```
 
-Install dependencies
+## 2. Install dependencies
 
 ```
-pip install opencv-contrib-python numpy
+pip install -r requirements.txt
 ```
+
+## 3. Specify variables in the `.env` file
+
+Create `.env` file in the root of repository and specify variables in it.
+
+For example:
+```
+TOKEN=86b0b932
+ADDRESS=username@123.12.0.123
+DATA_DIR=/path/to/dir
+```
+
+`DATA_DIR` should be the path to the directory where the script will download the archives and store the images. There must be enough space in this directory. At least 150 GB. Do not use this folder as `DATA_DIR`.
+
 
 # Usage
 
-## 1. Specify paths to your directories in the `filter.sh` file
+Take `project_id` of your FilteringProject from the https://egml.uk/tasks/my_tasks/ page. For example it is `123`
+
+## 1. Download images
 
 ```
-SOURCE_IMG_DIR=
-SELECTED_IMG_DIR=
+python3 download.py -n 123
 ```
 
-## 2. Save `filter.sh` and run script with command
+## 2. Filter images
 
 ```
-sh filter.sh
+python3 filtering.py -n 123
 ```
+
+## 3. Upload images and complete project
+
+```
+python3 complete.py -n 123
+```
+
+You don`t need to edit any files. Just run commands above with your filtering project id.
+
+After succesfull execution of `complete.py` script, filtering project will disappear from your tasks page on egml.uk
 
 # Controls:
 
@@ -40,25 +65,4 @@ x - forward with long delay
 a - backward short delay
 c - select image
 p - close window
-```
-
-# Download/Upload data
-
-For downloading and uploading data use `download.sh` and `upload.sh` scripts.
-
-Set your values to this variables in `download.sh` and `upload.sh` files. For example:
-```
-ADDRES=username@123.23.23.23
-REMOTE_DIR=/path/to/dir/on/server
-LOCAL_DIR=/path/to/your/dir
-```
-
-And run script with command:
-```
-sh download.sh
-```
-
-or 
-```
-sh upload.sh
 ```
