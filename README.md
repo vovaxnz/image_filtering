@@ -10,13 +10,18 @@ Utility for image filtering
 git clone https://github.com/vovaxnz/image_filtering.git
 ```
 
-## 2. Install dependencies
+## 2. cd to repo
+```
+cd image_filtering
+```
+
+## 3. Install dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-## 3. Specify variables in the `.env` file
+## 4. Specify variables in the `.env` file
 
 Create `.env` file in the root of repository and specify variables in it.
 
