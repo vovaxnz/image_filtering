@@ -1,3 +1,4 @@
+import os
 import shutil
 import argparse
 
@@ -19,6 +20,10 @@ def download(project_id):
         local_dir=pm.download_dir, 
         remote_dir=remote_source_dir
     )
+    
+    if len(os.listdir(pm.download_dir)) == 0:
+        print('It looks like no archive has been downloaded. Ask to create an archive')
+        return
 
     # Unzip archive
     unzip_files_in_folder(

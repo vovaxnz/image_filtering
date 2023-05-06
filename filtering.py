@@ -16,8 +16,8 @@ def filtering(
     source_img_dir: str,
     selected_img_dir: str,
     info_json_path: str,
-    window_height: int,
     window_width: int,
+    window_height: int,
     short_delay_ms: int,
     normal_delay_ms: int,
     long_delay_ms: int,
@@ -49,11 +49,11 @@ def filtering(
 
             img = cv2.imread(source_img_path)
             if img is None:
-                img = np.zeros((window_width, window_height, 3), np.uint8)
+                img = np.zeros((window_height, window_width, 3), np.uint8)
                 cv2.putText(img, f"Image broken: {img_names[img_id]}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                 cv2.putText(img, "Move on and continue filtering", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                 
-            img = cv2.resize(img, (window_height, window_width))
+            img = cv2.resize(img, (window_width, window_height))
             cv2.imshow('output', img)
 
             curr_time = time.time()
@@ -118,7 +118,7 @@ def start_filtering(project_id: int):
 
     pm = PathManager(project_id)
 
-    assert len(pm.source_images_dir) > 0, f"No images found. Download filtering project first via command: python3 download.py -n {project_id}"
+    assert len(os.listdir(pm.source_images_dir)) > 0, f"No images found. Download filtering project first via command: python3 download.py -n {project_id}"
 
     filtering(
         source_img_dir=pm.source_images_dir,
@@ -126,8 +126,8 @@ def start_filtering(project_id: int):
 
         info_json_path=pm.project_json_path,
 
-        window_height=config.window_height,
-        window_width=config.window_width, 
+        window_width=config.window_width,
+        window_height=config.window_height, 
         
         short_delay_ms=config.short_delay_ms,
         normal_delay_ms=config.normal_delay_ms,
