@@ -37,7 +37,7 @@ DATA_DIR=/path/to/dir
 
 # Usage
 
-Take `project_id` of your FilteringProject from the https://egml.uk/tasks/my_tasks/ page. For example it is `123`
+Take `project_id` of your FilteringProject from the https://eg-ml.com/tasks/my_tasks/ page. For example it is `123`
 
 ## 1. Download images
 
@@ -59,7 +59,7 @@ python3 complete.py -n 123
 
 You don`t need to edit any files. Just run commands above with your filtering project id.
 
-After succesfull execution of `complete.py` script, filtering project will disappear from your tasks page on egml.uk
+After succesfull execution of `complete.py` script, filtering project will disappear from your tasks page on eg-ml.com
 
 # Controls:
 

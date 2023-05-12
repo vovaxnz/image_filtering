@@ -3,7 +3,7 @@ from config import token
 
 
 def get_source_archive_dir(project_id: int) -> str:
-    url = f'https://egml.uk/api/filtering_project/source_dir/{project_id}/'
+    url = f'https://eg-ml.com/api/filtering_project/source_dir/{project_id}/'
 
     data = {'user_token': token}
     response = requests.post(url, json=data)
@@ -15,7 +15,7 @@ def get_source_archive_dir(project_id: int) -> str:
 
 
 def get_selected_images_dir(project_id: int) -> str:
-    url = f'https://egml.uk/api/filtering_project/selected_dir/{project_id}/'
+    url = f'https://eg-ml.com/api/filtering_project/selected_dir/{project_id}/'
 
     data = {'user_token': token}
     response = requests.post(url, json=data)
@@ -27,7 +27,7 @@ def get_selected_images_dir(project_id: int) -> str:
 
 
 def complete_project(project_id: int, duration_hours: float):
-    url = f'https://egml.uk/api/filtering_project/complete/{project_id}/'
+    url = f'https://eg-ml.com/api/filtering_project/complete/{project_id}/'
 
     data = {'user_token': token, 'duration_hours': duration_hours}
     response = requests.post(url, json=data)
