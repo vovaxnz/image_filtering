@@ -2,7 +2,7 @@ import os
 import shutil
 import argparse
 
-from api_requests import complete_project, get_selected_images_dir
+from api_requests import complete_project, get_number_of_uploaded_images, get_selected_images_dir
 from path_manager import PathManager
 from ssh_utils import ssh_upload
 from utils import open_json
@@ -12,10 +12,6 @@ def complete(project_id: int):
     
     pm = PathManager(project_id)
 
-    # Check that selected dir is not empty
-    if len(os.listdir(pm.selected_images_dir)) == 0:
-        input(f"You have not selected any images in the {project_id} project. Press Enter if this is true. Or press CTRL+C if you haven't started filtering this project yet, and start filtering this project via command: python3 filtering.py -n <project_id>.")
-
     # Get selected images remote dir
     remote_selected_dir = get_selected_images_dir(project_id=project_id)
     
@@ -24,6 +20,13 @@ def complete(project_id: int):
         local_dir=pm.selected_images_dir, 
         remote_dir=remote_selected_dir
     )
+
+    # API request to patform to get number of uploaded images
+    number_of_uploaded_images = get_number_of_uploaded_images(project_id=project_id)
+
+    # If 0 images uploaded - ask for confirmation
+    if number_of_uploaded_images == 0:
+        input(f"You have not uploaded any images in the {project_id} project. Press Enter to confirm. Or press CTRL+C and run complete.py again. Or make sure that this is the exact project you want to complete")
 
     # Remove source images
     shutil.rmtree(pm.source_images_dir)
