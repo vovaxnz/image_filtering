@@ -53,7 +53,18 @@ def filtering(
                 cv2.putText(img, f"Image broken: {img_names[img_id]}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                 cv2.putText(img, "Move on and continue filtering", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                 
+
             img = cv2.resize(img, (window_width, window_height))
+
+            # tuning progress bar
+            text = f'ImgID: {img_id}, Prcsd {round(img_id / len(img_names) * 100, 2)}%'
+            font = cv2.FONT_HERSHEY_PLAIN
+            org = (50, 50)
+            color = (0, 255, 0)
+            thickness = 2
+            cv2.putText(img, text, org, font, 1, color, thickness)
+
+
             cv2.imshow('output', img)
 
             curr_time = time.time()
