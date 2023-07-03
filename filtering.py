@@ -13,7 +13,7 @@ import config
 
 
 def filtering(
-    source_img_dir: str,
+    source_video_path: str,
     selected_img_dir: str,
     info_json_path: str,
     window_width: int,
@@ -33,9 +33,15 @@ def filtering(
         img_id = 0
         duration = 0
 
-    img_names = sorted(os.listdir(source_img_dir))
+    cap = cv2.VideoCapture(source_video_path)
 
-    total_number_of_images = len(img_names)
+    # Check if the video file was successfully opened
+    if not cap.isOpened():
+        print("Error opening video file")
+
+    # Get the total number of frames in the video
+    total_number_of_images = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
     start_time = time.time()
     update_image = True
     delay = short_delay_ms
@@ -45,19 +51,14 @@ def filtering(
     while True:
 
         if update_image:
-            source_img_path = os.path.join(source_img_dir, img_names[img_id])
+            cap.set(cv2.CAP_PROP_POS_FRAMES, img_id)
+            ret, img = cap.read()
 
-            img = cv2.imread(source_img_path)
-            if img is None:
-                img = np.zeros((window_height, window_width, 3), np.uint8)
-                cv2.putText(img, f"Image broken: {img_names[img_id]}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                cv2.putText(img, "Move on and continue filtering", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                
-
+       
             img = cv2.resize(img, (window_width, window_height))
 
             # tuning progress bar
-            text = f'ImgID: {img_id}, Prcsd {round(img_id / len(img_names) * 100, 2)}%'
+            text = f'ImgID: {img_id}, Prcsd {round(img_id / total_number_of_images * 100, 2)}%'
             font = cv2.FONT_HERSHEY_PLAIN
             org = (50, 50)
             color = (0, 255, 0)
@@ -87,17 +88,17 @@ def filtering(
         # forward
         if k == ord('w'):
             img_id += 1
-            img_id = min(len(img_names) - 1, img_id)
+            img_id = min(total_number_of_images - 1, img_id)
             update_image = True
             delay=short_delay_ms
         if k == ord('s'):
             img_id += 1
-            img_id = min(len(img_names) - 1, img_id)
+            img_id = min(total_number_of_images - 1, img_id)
             update_image = True
             delay=normal_delay_ms
         if k == ord('x'):
             img_id += 1
-            img_id = min(len(img_names) - 1, img_id)
+            img_id = min(total_number_of_images - 1, img_id)
             update_image = True
             delay=long_delay_ms
 
@@ -111,28 +112,26 @@ def filtering(
 
 
         if k == ord('c'):
-            print('copied', img_names[img_id])
-            shutil.copy(
-                os.path.join(source_img_dir, img_names[img_id]),
-                os.path.join(selected_img_dir, img_names[img_id])
-            )
-            
+            print('copied', img_id)
+            cv2.imwrite(os.path.join(selected_img_dir, f"{str(img_id).zfill(6)}.jpg"), img)
             img_id += 1
-            img_id = min(len(img_names) - 1, img_id)
+            img_id = min(total_number_of_images - 1, img_id)
             update_image = True
 
         if k == ord('p'):
             break
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 def start_filtering(project_id: int):
 
     pm = PathManager(project_id)
 
-    assert len(os.listdir(pm.source_images_dir)) > 0, f"No images found. Download filtering project first via command: python3 download.py -n {project_id}"
+    assert os.path.isfile(pm.video_path), f"No video found. Download filtering project via command: python3 download.py -n {project_id}"
 
     filtering(
-        source_img_dir=pm.source_images_dir,
+        source_video_path=pm.video_path,
         selected_img_dir=pm.selected_images_dir,
 
         info_json_path=pm.project_json_path,

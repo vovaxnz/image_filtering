@@ -28,8 +28,9 @@ def complete(project_id: int):
     if number_of_uploaded_images == 0:
         input(f"You have not uploaded any images in the {project_id} project. Press Enter to confirm. Or press CTRL+C and run complete.py again. Or make sure that this is the exact project you want to complete")
 
-    # Remove source images
-    shutil.rmtree(pm.source_images_dir)
+    # Remove source video
+    if os.path.isfile(pm.video_path):
+        os.remove(pm.video_path)
 
     # Mark project as completed
     complete_project(
