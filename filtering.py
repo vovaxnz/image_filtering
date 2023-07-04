@@ -47,13 +47,17 @@ def filtering(
     delay = short_delay_ms
     img_counter = img_id
     last_img_id = img_id
+    move_backward = False 
 
     while True:
 
         if update_image:
-            cap.set(cv2.CAP_PROP_POS_FRAMES, img_id)
-            ret, img = cap.read()
 
+            if move_backward:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, img_id)
+                move_backward = False
+
+            ret, img = cap.read()
        
             img = cv2.resize(img, (window_width, window_height))
 
@@ -84,6 +88,7 @@ def filtering(
             img_id = max(0, img_id)
             update_image = True
             delay=normal_delay_ms
+            move_backward = True
 
         # forward
         if k == ord('w'):
