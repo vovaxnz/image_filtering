@@ -35,6 +35,8 @@ def filtering(
 
     cap = cv2.VideoCapture(source_video_path)
 
+    cap.set(cv2.CAP_PROP_POS_FRAMES, img_id)
+
     # Check if the video file was successfully opened
     if not cap.isOpened():
         print("Error opening video file")
@@ -78,6 +80,8 @@ def filtering(
             duration += step_duration
             save_json({"img_id": img_id, "duration": duration}, info_json_path)
             print(f'Image ID: {img_id}, Processed {round(img_id / total_number_of_images * 100, 2)}% of images, Your speed: {int(img_counter / duration * 3600)} images/hour, filtering_duration: {round(duration / 3600, 3)} hours')
+
+            update_image = False
 
         k = cv2.waitKey(0)
         time.sleep(delay / 1000)
