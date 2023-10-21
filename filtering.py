@@ -59,9 +59,9 @@ def filtering(
                 cap.set(cv2.CAP_PROP_POS_FRAMES, img_id)
                 move_backward = False
 
-            ret, img = cap.read()
+            ret, orig_img = cap.read()
        
-            img = cv2.resize(img, (window_width, window_height))
+            img = cv2.resize(orig_img, (window_width, window_height))
 
             # tuning progress bar
             text = f'ImgID: {img_id}, Prcsd {round(img_id / total_number_of_images * 100, 2)}%'
@@ -115,19 +115,20 @@ def filtering(
             img_counter += 1
             last_img_id = img_id
 
-        if img_id == total_number_of_images - 1:
-            print('You processed all images! 🎉')
-            break
 
 
         if k == ord('c'):
             print('copied', img_id)
-            cv2.imwrite(os.path.join(selected_img_dir, f"{str(img_id).zfill(6)}.jpg"), img)
+            cv2.imwrite(os.path.join(selected_img_dir, f"{str(img_id).zfill(6)}.jpg"), orig_img)
             img_id += 1
             img_id = min(total_number_of_images - 1, img_id)
             update_image = True
 
         if k == ord('p'):
+            break
+
+        if img_id == total_number_of_images - 1:
+            print('You processed all images! 🎉')
             break
     cap.release()
     cv2.destroyAllWindows()
