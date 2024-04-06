@@ -11,8 +11,6 @@ assert token is not None
 assert address is not None
 assert data_dir is not None
 
-window_width=1280
-window_height=720
 
 short_delay_ms=5
 normal_delay_ms=40

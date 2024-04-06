@@ -16,8 +16,6 @@ def filtering(
     source_video_path: str,
     selected_img_dir: str,
     info_json_path: str,
-    window_width: int,
-    window_height: int,
     short_delay_ms: int,
     normal_delay_ms: int,
     long_delay_ms: int,
@@ -32,6 +30,8 @@ def filtering(
         save_json({"img_id": 0, "duration": 0}, info_json_path)
         img_id = 0
         duration = 0
+
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)  
 
     cap = cv2.VideoCapture(source_video_path)
 
@@ -61,7 +61,7 @@ def filtering(
 
             ret, orig_img = cap.read()
        
-            img = cv2.resize(orig_img, (window_width, window_height))
+            img = orig_img
 
             # tuning progress bar
             text = f'ImgID: {img_id}, Prcsd {round(img_id / total_number_of_images * 100, 2)}%'
@@ -146,8 +146,6 @@ def start_filtering(project_id: int):
 
         info_json_path=pm.project_json_path,
 
-        window_width=config.window_width,
-        window_height=config.window_height, 
         
         short_delay_ms=config.short_delay_ms,
         normal_delay_ms=config.normal_delay_ms,
