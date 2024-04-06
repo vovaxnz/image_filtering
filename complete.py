@@ -26,7 +26,7 @@ def complete(project_id: int):
 
     # If 0 images uploaded - ask for confirmation
     if number_of_uploaded_images == 0:
-        input(f"You have not uploaded any images in the {project_id} project. Press Enter to confirm. Or press CTRL+C and run complete.py again. Or make sure that this is the exact project you want to complete")
+        input(f"You are going to complete project {project_id} without a single selected image. The entire filtering project will be deleted. Press Enter to confirm. Or press CTRL+C if you are not going to complete project {project_id}.")
 
     # Remove source video
     if os.path.isfile(pm.video_path):
